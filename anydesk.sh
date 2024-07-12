@@ -29,7 +29,5 @@ sudo systemctl start anydesk && anydesk
 # Step 5: Configuring unattended access
 sudo echo etiquetei@2024 | sudo anydesk --set-password
 
-# Step 6: Get Anydesk id
-echo anydesk --get-id
-
-echo "Installation complete. Configure the alias and password as needed."
+echo "AnyDesk installed successfully. AnyDesk ID is displayed below:"
+anydesk --get-id

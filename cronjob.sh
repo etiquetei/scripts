@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SERVICE_NAME="etiquetei"
-UPDATE_SCRIPT_PATH="/home/$USER/${SERVICE_NAME}-scripts/update.sh"
+UPDATE_SCRIPT_PATH="/etc/etiquetei/scripts/update.sh"
 CRON_FILE="/tmp/cronfile"
 DEFAULT_FREQUENCY="*/15 * * * *"
 

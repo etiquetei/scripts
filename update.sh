@@ -2,7 +2,7 @@
 
 SERVICE_NAME="etiquetei"
 USER=$(whoami)
-EXECUTABLE_PATH="/home/$USER/${SERVICE_NAME}-application"
+EXECUTABLE_PATH="/etc/etiquetei/application"
 REPO_PATH="$EXECUTABLE_PATH"
 INI_FILE="$EXECUTABLE_PATH/etiquetei.ini"
 

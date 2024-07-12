@@ -23,13 +23,24 @@ get_encryption_key() {
   fi
 }
 
+# Function to choose the instalattion path
+choose_installation_path() {
+  read -p "Enter the installation path (press Enter to use default): " INSTALLATION_PATH
+  if [ -z "$INSTALLATION_PATH" ]; then
+    INSTALLATION_PATH="/etc/etiquetei/application"
+    echo "Using default installation path: /etc/etiquetei/application"
+  else
+    echo "Installation path chosen: $INSTALLATION_PATH"
+  fi
+}
+
 # Main function to create the systemd service file
 create_systemd_service() {
   SERVICE_NAME="etiquetei"
   USER=$(whoami)
   GROUP=$(id -gn)
   SERVICE_PATH="/etc/systemd/system/$SERVICE_NAME.service"
-  EXECUTABLE_PATH="/home/$USER/${SERVICE_NAME}-application/$SERVICE_NAME"
+  EXECUTABLE_PATH="/$INSTALLATION_PATH/$SERVICE_NAME"
 
   echo "Creating systemd service file at $SERVICE_PATH..."
 
@@ -71,6 +82,7 @@ EOL"
 main() {
   choose_environment
   get_encryption_key
+  choose_installation_path
   create_systemd_service
 }
 
