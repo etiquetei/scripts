@@ -34,6 +34,42 @@ choose_installation_path() {
   fi
 }
 
+# Function to clone the repository
+clone_repository() {
+  REPO_URL="https://github.com/etiquetei/application-releases.git"
+  echo "Cloning repository from $REPO_URL to $INSTALLATION_PATH..."
+  git clone $REPO_URL $INSTALLATION_PATH
+  if [ $? -eq 0 ]; then
+    echo "Repository cloned successfully."
+  else
+    echo "Failed to clone the repository."
+    exit 1
+  fi
+}
+
+# Function to copy the update.sh script to the specified path with the necessary permissions
+copy_update_script() {
+  BASE_PATH=$(dirname "$INSTALLATION_PATH")
+  SCRIPTS_PATH="$BASE_PATH/scripts"
+  SOURCE_SCRIPT="update.sh"
+  DEST_SCRIPT="$SCRIPTS_PATH/update.sh"
+
+  # Create the scripts directory if it doesn't exist
+  if [ ! -d "$SCRIPTS_PATH" ]; then
+    echo "Creating directory $SCRIPTS_PATH..."
+    mkdir -p "$SCRIPTS_PATH"
+  fi
+
+  # Copy the script file with executable permissions
+  echo "Copying update script file to $DEST_SCRIPT..."
+  cp "$SOURCE_SCRIPT" "$DEST_SCRIPT"
+
+  # Make the script executable
+  chmod +x "$DEST_SCRIPT"
+
+  echo "Script file copied and made executable at $DEST_SCRIPT."
+}
+
 # Main function to create the systemd service file
 create_systemd_service() {
   SERVICE_NAME="etiquetei"
@@ -83,6 +119,16 @@ main() {
   choose_environment
   get_encryption_key
   choose_installation_path
+  clone_repository
+  copy_update_script
+
+  echo "Running update script $DEST_SCRIPT..."
+  bash "$DEST_SCRIPT"
+
+  CRONJOB_SCRIPT="cronjob.sh"
+  echo "Running cronjob script $CRONJOB_SCRIPT..."
+  bash "$CRONJOB_SCRIPT"
+
   create_systemd_service
 }
 
